@@ -43,11 +43,11 @@ imageSvg.append("image")
   .attr("y", 0); // Set the y position
 
   
-  const financeCategory = data[0].children.find(category => category.title === "Finance");
-  const financeMin = Math.min(...financeCategory.children.map(child => child.magnitude));
-  const financeMax = Math.max(...financeCategory.children.map(child => child.magnitude));
-  
-  const educationCategory = data[0].children.find(category => category.title === "Education");
+const financeCategory = data[0].children.find(category => category.title === "Finance");
+const financeMin = Math.min(...financeCategory.children.map(child => child.magnitude));
+const financeMax = Math.max(...financeCategory.children.map(child => child.magnitude));
+
+const educationCategory = data[0].children.find(category => category.title === "Education");
 const shoppingCategory = data[0].children.find(category => category.title === "Shopping");
 
 const educationMin = Math.min(...educationCategory.children.map(child => child.magnitude));
@@ -245,15 +245,15 @@ const financeColorScale = d3.scaleSequential()
 
 
     cell.filter((d) => d.depth === 2)
-    .append("text")
-    .attr("x", (d) => (d.x1 - d.x0) / 2)
-    .attr("y", 30)
-    .attr("text-anchor", "middle")
-    .attr("class", "sub-label")
-    .style("fill",  (d) => d.data.magnitude < 21 ? "black" : "white")
-    .style("font-size", "14px")
-    .style("opacity", (d) => d.data.magnitude < 6 ? "0" : "1")
-    .text((d) => d.data.title);
+      .append("text")
+      .attr("x", (d) => (d.x1 - d.x0) / 2)
+      .attr("y", 30)
+      .attr("text-anchor", "middle")
+      .attr("class", "sub-label")
+      .style("fill",  (d) => d.data.magnitude < 21 ? "black" : "white")
+      .style("font-size", "14px")
+      // .style("opacity", (d) => d.data.magnitude < 6 ? "0" : "1")
+      .text((d) => d.data.title);
     
 
   // Add labels for magnitudes
@@ -315,90 +315,72 @@ const financeColorScale = d3.scaleSequential()
 function updateTreemap(index) {
   const svg = d3.select("#avicii_viz");
 
-        svg.selectAll("rect") 
-          .filter(function(d) { return d.depth === 1 || d.depth === 2; }) 
-          .attr("fill", (d)=>{
-            
-            if(index==7){
-              if (d.depth === 1) {
-                // Example: Change color based on specific category titles
-                if (d.data.title === "Finance") {
-                    return "lightblue";
-                } else if (d.data.title === "Shopping") {
-                    return "lightgreen";
-                } else {
-                    return "orange"; // Default color for other categories
-                }
-              }
-              else{return "white";}
-            }
-            
-            else if (index < 8 && index !=0){
-              return "white";
-            }
-            
-            else{
-              if (d.depth === 0) {
-                return "white"; // Root category color
-            }if (d.depth === 1) {
-                // Example: Change color based on specific category titles
-                if (d.data.title === "Finance") {
-                    return "lightblue";
-                } else if (d.data.title === "Shopping") {
-                    return "lightgreen";
-                } else {
-                    return "orange"; // Default color for other categories
-                }
-            }if (d.depth === 2) {
-              // Example: Change color based on specific category titles
-              if (d.parent.data.title === 'Finance' ) {
-                  return financeColorScale(d.data.magnitude);
-              } else if (d.parent.data.title === "Shopping") {
-                  return shoppingColorScale(d.data.magnitude);
-              } else if (d.parent.data.title === "Education"){
-                  return educationColorScale(d.data.magnitude); // Default color for other categories
-              }
-              else{
-                return "orange";
-              }
-            }
-            }
-          });
+  svg.selectAll("rect")
+    .filter(function (d) { return d.depth === 1 || d.depth === 2; })
+    .attr("fill", (d) => {
 
-          svg.selectAll(".sub-label")
-    .style("fill", (d) =>{
-      if(index ==0 ){
-        
-        console.log(d.data.magnitude);
-        if(d.data.magnitude<21){
-          
-          return "black";
-        } 
-        else{
-          return "white";
+      if (index == 7) {
+        if (d.depth === 1) {
+          // Example: Change color based on specific category titles
+          if (d.data.title === "Finance") {
+            return "lightblue";
+          } else if (d.data.title === "Shopping") {
+            return "lightgreen";
+          } else {
+            return "orange"; // Default color for other categories
+          }
+        }
+        else { return "white"; }
+      }
+
+      else if (index < 8 && index != 0) {
+        return "white";
+      }
+
+      else {
+        if (d.depth === 0) {
+          return "white"; // Root category color
+        } if (d.depth === 1) {
+          // Example: Change color based on specific category titles
+          if (d.data.title === "Finance") {
+            return "lightblue";
+          } else if (d.data.title === "Shopping") {
+            return "lightgreen";
+          } else {
+            return "orange"; // Default color for other categories
+          }
+        } if (d.depth === 2) {
+          // Example: Change color based on specific category titles
+          if (d.parent.data.title === 'Finance') {
+            return financeColorScale(d.data.magnitude);
+          } else if (d.parent.data.title === "Shopping") {
+            return shoppingColorScale(d.data.magnitude);
+          } else if (d.parent.data.title === "Education") {
+            return educationColorScale(d.data.magnitude); // Default color for other categories
+          }
+          else {
+            return "orange";
+          }
         }
       }
-      else if(index ==6){
-        return "black"; 
-        
-      }
-      else if(index >7){
-        if(d.data.magnitude<21){
-          console.log(d.data.magnitude,"blck");
-          return "black";
-        } 
-        else{
-          console.log(d.data.magnitude);
-          return "white";
-        }
-      }
-      else{
-        console.log("hi");
+    });
+
+  svg.selectAll(".sub-label")
+    .style("fill", (d) => {
+      if (index === 6) {
         return "black";
-        
       }
-    } )
+      // For index0 and all index >=7, use magnitude threshold on depth-2 labels
+      if (index === 0 || index >= 7) {
+        return d.data.magnitude < 21 ? "black" : "white";
+      }
+      // intermediate states (1-5) are blue
+      return "blue";
+    })
     .style("opacity", (d) => d.data.magnitude < 6 ? "0" : "1");
+
+  svg.selectAll(".magnitude-label")
+    .style("fill", (d) => d.data.magnitude < 21 ? "black" : "white");
 
           svg2.selectAll("rect") 
           .filter(function(d) { return d.depth === 1 || d.depth === 2; }) 
@@ -448,175 +430,166 @@ function updateTreemap(index) {
           //svg.selectAll(".sub-label") 
           //.attr("fill", (d) => d.data.magnitude<21? "black":"white");
 
-          svg2.selectAll(".sub-label2")
-          .style("opacity", (d) => d.data.magnitude < 5000 ? "0" : "1")
-    .style("fill", (d) =>{
-      if(d.data.title == "Baby Books"){
+  svg2.selectAll(".sub-label2")
+    .style("opacity", (d) => d.data.magnitude < 5000 ? "0" : "1")
+    .style("fill", (d) => {
+      if (d.data.title == "Baby Books") {
         return "black";
       }
-      else{
-        if(d.data.magnitude<11100){
+      else {
+        if (d.data.magnitude < 11100) {
           return "black";
-        } 
-        else{return "white";}
-      }
-    } );
-
-    svg2.selectAll(".magnitude-label")
-          .style("opacity", (d) => d.data.magnitude < 5000 ? "0" : "1")
-    .style("fill", (d) =>{
-      if(d.data.title == "Baby Books"){
-        return "black";
-      }
-      else{
-        if(d.data.magnitude<11100){
-          return "black";
-        } 
-        else{return "white";}
-      }
-    } );
-    //svg.append("text")
-  
-    
-        
-        if(index ===0){
-          svg.selectAll("rect") 
-          .filter(function(d) { return d.depth === 1 || d.depth === 2; }) 
-          .attr("display", "block"); 
-          svg.selectAll(".magnitude-label")
-    .attr("display", "block"); 
-    svg.selectAll(".sub-label")
-    .attr("display", "block"); 
-          imageSvg.style("visibility", "hidden");
         }
-        if(index===1){
-          //svg.selectAll("rect").attr("visibility", "hidden");
-    //svg.selectAll("text").attr("visibility", "hidden");
+        else { return "white"; }
+      }
+    });
+
+  svg2.selectAll(".magnitude-label")
+    .style("opacity", (d) => d.data.magnitude < 5000 ? "0" : "1")
+    .style("fill", (d) => {
+      if (d.data.title == "Baby Books") {
+        return "black";
+      }
+      else {
+        if (d.data.magnitude < 11100) {
+          return "black";
+        }
+        else { return "white"; }
+      }
+    });
+
+
+  if (index === 0) {
     svg.selectAll("rect")
-    .filter(function(d) { return d.depth !=0; }) 
-    .attr("display", "none"); 
+      .filter(function (d) { return d.depth === 1 || d.depth === 2; })
+      .attr("display", "block");
     svg.selectAll(".magnitude-label")
-    .attr("display", "none"); 
+      .attr("display", "block");
     svg.selectAll(".sub-label")
-    .attr("display", "none"); 
-    d3.selectAll("text") 
-          .data(root.descendants())
-          .filter(function(d) { return d.depth === 1; }) 
-          .attr("display", "none");
-          imageSvg.style("visibility", "hidden");
+      .attr("display", "block");
+    imageSvg.style("visibility", "hidden");
+  }
+  if (index === 1) {
+    svg.selectAll("rect")
+      .filter(function (d) { return d.depth != 0; })
+      .attr("display", "none");
+    svg.selectAll(".magnitude-label")
+      .attr("display", "none");
+    svg.selectAll(".sub-label")
+      .attr("display", "none");
+    svg.selectAll("text")
+      .filter(function (d) { return d.depth === 1; })
+      .attr("display", "none");
+    imageSvg.style("visibility", "hidden");
 
-        }
-        if(index ===2){
-          //svg.selectAll("rect").style("display", "block");
+  }
+  if (index === 2) {
+    //svg.selectAll("rect").style("display", "block");
     //svg.selectAll("text").style("display", "block");
 
-          svg.attr("visibility", "visible");
-          svg.selectAll("rect") 
-          .filter(function(d) { return d.depth === 1 || d.depth === 2; }) 
-          .attr("display", "none"); 
-          d3.selectAll("rect") 
-          .filter(function(d) { return d.depth === 1; })
-          .attr("display", "none");
+    svg.attr("visibility", "visible");
+    svg.selectAll("rect")
+      .filter(function (d) { return d.depth === 1 || d.depth === 2; })
+      .attr("display", "none");
+    d3.selectAll("rect")
+      .filter(function (d) { return d.depth === 1; })
+      .attr("display", "none");
 
-        }
-        if(index ===3){
-          d3.selectAll("rect") 
-          .filter(function(d) { return d.depth === 1; })
-          .attr("display", "block"); 
-          d3.selectAll("rect") 
-          .data(root.descendants())
-          .filter(function(d) { return d.depth === 2; }) 
-          .attr("display", "none");
-        }
-        if(index ===4){
-          d3.selectAll("rect") 
-          .data(root.descendants())
-          .filter(function(d) { return d.depth === 2; }) 
-          .attr("display", "block"); 
-          d3.selectAll("text") 
-          .data(root.descendants())
-          .filter(function(d) { return d.depth === 1; }) 
-          .attr("display", "none");
-        }
-        if(index ===5){
-          svg.selectAll("text") 
-          .filter(function(d) { return d.depth === 1; }) 
-          .attr("display", "block");
-          svg.selectAll(".sub-label") 
-          .attr("display", "none");
-          svg.selectAll("rect")
-          .filter(function(d) { return d.depth === 2; })
-          .attr("display", "block");
-          
-        }
-        if(index ===6){
-          svg.selectAll(".sub-label") 
-          .attr("display", "block");
-          svg.selectAll(".magnitude-label") 
-          .attr("display", "none");
-          d3.selectAll("rect")
-          .data(root.descendants())
-          .filter(function(d) { return d.depth === 2; })
-          .attr("display", "block");
-        }
-        if(index===7){
-          d3.selectAll("rect")
-          .filter(function(d) { return d.depth === 2; })
-          .attr("display", "none");
-          svg.selectAll(".sub-label") 
-          .attr("display", "none");
-        }
-        if (index==8){
-          svg.selectAll(".sub-label")
-          .attr("display", "block");
-          d3.selectAll("rect")
-          .filter(function(d) { return d.depth === 2; })
-          .attr("display", "block");
-        }
-        if(index ===9){
-          d3.selectAll(".magnitude-label") 
-          .attr("display", "none");
+  }
+  if (index === 3) {
+    d3.selectAll("rect")
+      .filter(function (d) { return d.depth === 1; })
+      .attr("display", "block");
+    d3.selectAll("rect")
+      .filter(function (d) { return d.depth === 2; })
+      .attr("display", "none");
+  }
+  if (index === 4) {
+    d3.selectAll("rect")
+      .filter(function (d) { return d.depth === 2; })
+      .attr("display", "block");
+    d3.selectAll("text")
+      .filter(function (d) { return d.depth === 1; })
+      .attr("display", "none");
+  }
+  if (index === 5) {
+    svg.selectAll("text")
+      .filter(function (d) { return d.depth === 1; })
+      .attr("display", "block");
+    svg.selectAll(".sub-label")
+      .attr("display", "none");
+    svg.selectAll("rect")
+      .filter(function (d) { return d.depth === 2; })
+      .attr("display", "block");
 
-        const zoom = d3.zoom()
-            .scaleExtent([1, 8]) // Example scale extent
-            .on('zoom', (event) => {
-                // Apply the zoom transform to the main group containing the treemap
-                svg.attr('transform', event.transform);
-            });
+  }
+  if (index === 6) {
+    svg.selectAll(".sub-label")
+      .attr("display", "block");
+    svg.selectAll(".magnitude-label")
+      .attr("display", "none");
+    d3.selectAll("rect")
+      .filter(function (d) { return d.depth === 2; })
+      .attr("display", "block");
+  }
+  if (index === 7) {
+    d3.selectAll("rect")
+      .filter(function (d) { return d.depth === 2; })
+      .attr("display", "none");
+    svg.selectAll(".sub-label")
+      .attr("display", "none");
+  }
+  if (index == 8) {
+    svg.selectAll(".sub-label")
+      .attr("display", "block");
+    d3.selectAll("rect")
+      .filter(function (d) { return d.depth === 2; })
+      .attr("display", "block");
+  }
+  if (index === 9) {
+    d3.selectAll(".magnitude-label")
+      .attr("display", "none");
 
-        // Initial zoom focus parameters
-        const focusX = 100, focusY = 50, focusWidth = 300, focusHeight = 200;
-        const scaleX = width / focusWidth;
-        const scaleY = height / focusHeight;
-        const scale = Math.min(scaleX, scaleY); // Maintain aspect ratio
-        const translateX = -focusX * scale + (width - focusWidth * scale) / 2;
-        const translateY = -focusY * scale + (height - focusHeight * scale) / 2;
-        const initialTransform = d3.zoomIdentity.translate(translateX, translateY).scale(scale);
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8]) // Example scale extent
+      .on('zoom', (event) => {
+        // Apply the zoom transform to the main group containing the treemap
+        svg.attr('transform', event.transform);
+      });
 
-        // Apply the initial zoom
-        //mainSvg.call(zoom).call(zoom.transform, initialTransform);
-        svg.call(zoom.transform, initialTransform);
-        
-        }
-        if(index ===10){
-        d3.selectAll(".magnitude-label") 
-          .attr("display", "block");
-        }
-        if(index ===11){
-          d3.selectAll(".magnitude-label") 
-          .style("visibility", "hidden");
-          }
-        if (index === 12) {
-          svg.style("visibility", "hidden");
-          svg2.style("visibility", "visible");
-          svg2.selectAll(".magnitude-label2").style("visibility", "hidden");
-      } else {
-          svg.style("visibility", "visible");
-          svg2.style("visibility", "hidden");
-      }
-      if (index === 13) {
-        svg.style("visibility", "hidden");
-        imageSvg.style("visibility", "visible");
-      }
-    }
+    // Initial zoom focus parameters
+    const focusX = 100, focusY = 50, focusWidth = 300, focusHeight = 200;
+    const scaleX = width / focusWidth;
+    const scaleY = height / focusHeight;
+    const scale = Math.min(scaleX, scaleY); // Maintain aspect ratio
+    const translateX = -focusX * scale + (width - focusWidth * scale) / 2;
+    const translateY = -focusY * scale + (height - focusHeight * scale) / 2;
+    const initialTransform = d3.zoomIdentity.translate(translateX, translateY).scale(scale);
+
+    // Apply the initial zoom
+    // svg.call(zoom.transform, initialTransform);
+
+  }
+  if (index === 10) {
+    d3.selectAll(".magnitude-label")
+      .attr("display", "block")
+      .style("visibility", "visible");
+  }
+  if (index === 11) {
+    d3.selectAll(".magnitude-label")
+      .style("visibility", "hidden");
+  }
+  if (index === 12) {
+    svg.style("visibility", "hidden");
+    svg2.style("visibility", "visible");
+    svg2.selectAll(".magnitude-label2").style("visibility", "hidden");
+  } else {
+    svg.style("visibility", "visible");
+    svg2.style("visibility", "hidden");
+  }
+  if (index === 13) {
+    svg.style("visibility", "hidden");
+    imageSvg.style("visibility", "visible");
+  }
+}
     

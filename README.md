@@ -15,10 +15,23 @@ Steps to install:
         1. npm install react react-dom
         2. npm install react-simple-chatbot --save
 
-How to run: 
+How to run the chatbot: 
 
     Server side: 
         node backend.js
 
     Client side:    
         npm start
+
+
+
+How to run scrollytelling:
+
+    Start the Server:
+        python -m http.server
+
+    Start heatmap onboarding:
+        http://localhost:8000/Heatmap-Scrolly/
+
+    Start treemap onboarding:
+        http://localhost:8000/Treemap-Scrolly/

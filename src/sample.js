@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatBot from 'react-simple-chatbot';
 // import body from './index.css';
-import { LineGraph } from './LineGraph';
-import { BarGraph } from './BarGraph';
-import { PieGraph } from './PieGraph';
 import { HeatGraph } from './Heatmap/HeatMap';
 import { HeatGraphTrends } from './Heatmap/HeatMapTrends';
 import HeatmapAxes from './Heatmap/HeatmapAxes'; // Import the HeatmapAxes component
