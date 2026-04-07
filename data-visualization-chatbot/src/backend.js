@@ -4,9 +4,8 @@ const app = express()
 app.use(cors());
 const fs = require('fs')
 
-// Provide support for JSON parser
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+// Use Express's built-in JSON parser for request bodies.
+app.use(express.json());
 const dataDirectory = 'DataFiles';
 
 // REST POST to save data
@@ -25,7 +24,7 @@ app.post('/savedata', (req, res) => {
     })
 })
 
-// Starting blocking server which listens on port 3000
+// Start the server on port 3001.
 app.listen(3001, () => {
   console.log('Server started on port 3001')
 })

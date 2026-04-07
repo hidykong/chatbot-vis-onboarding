@@ -1,42 +1,90 @@
 # vis-literacy
 
-Project structure:
+This repository contains two onboarding prototypes for data visualization literacy:
 
-    data-visualization-chatbot:
-        Source code for the chatbot-based onboarding prototype.
+- `data-visualization-chatbot`: source code for the chatbot-based onboarding prototype
+- `data-visualization-scrollytelling`: source code for the scrollytelling-based onboarding prototype
 
-    data-visualization-scrollytelling:
-        Source code for the scrollytelling-based onboarding prototype.
+## Requirements
 
-Steps to install:
+- Node.js 18.x and npm for the chatbot application
+- Python 3 for serving the scrollytelling pages locally
 
-    Chatbot:
+## Install the Chatbot Application
 
-        1. Install Node.js version v18.15.0 based on operating system.
-            https://nodejs.dev/en/learn/how-to-install-nodejs/
-        2. cd data-visualization-chatbot
-        3. npm install
+1. Install Node.js 18.x for your operating system.
+2. Open a terminal and move into the chatbot project:
 
-How to run the chatbot: 
+   ```bash
+   cd data-visualization-chatbot
+   ```
 
-    1. cd data-visualization-chatbot
+3. Install all required modules:
 
-    2. Server side:
-        node src/backend.js
+   ```bash
+   npm install
+   ```
 
-    3. Client side:
-        npm start
+This command installs the packages declared in `data-visualization-chatbot/package.json`, including:
 
+- `express`
+- `cors`
+- `react`
+- `react-dom`
+- `react-scripts`
+- `react-simple-chatbot`
+- `d3`
+- `react-markdown`
+- `recharts`
+- `@testing-library/jest-dom`
+- `@testing-library/react`
+- `@testing-library/user-event`
+- `web-vitals`
 
-How to run scrollytelling:
+`gh-pages` is also installed as a development dependency for deployment builds.
 
-    1. cd data-visualization-scrollytelling
+## Run the Chatbot Application
 
-    2. Start the Server:
-        python -m http.server
+Start the backend server in one terminal:
 
-    3. Start heatmap onboarding:
-        http://localhost:8000/Heatmap-Scrolly/
+```bash
+cd data-visualization-chatbot
+node src/backend.js
+```
 
-    4. Start treemap onboarding:
-        http://localhost:8000/Treemap-Scrolly/
+Start the frontend in a second terminal:
+
+```bash
+cd data-visualization-chatbot
+npm start
+```
+
+The frontend runs on `http://localhost:3000`, and the backend listens on port `3001`.
+
+## Run the Scrollytelling Prototype
+
+No additional npm modules are required for the scrollytelling prototype.
+
+1. Open a terminal and move into the scrollytelling directory:
+
+   ```bash
+   cd data-visualization-scrollytelling
+   ```
+
+2. Start a local server:
+
+   ```bash
+   python3 -m http.server 8000
+   ```
+
+3. Open the heatmap onboarding page:
+
+   ```text
+   http://localhost:8000/Heatmap-Scrolly/
+   ```
+
+4. Open the treemap onboarding page:
+
+   ```text
+   http://localhost:8000/Treemap-Scrolly/
+   ```
